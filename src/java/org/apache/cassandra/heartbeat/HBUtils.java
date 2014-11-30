@@ -23,6 +23,8 @@ import org.apache.cassandra.db.ColumnFamilyStore;
 import org.apache.cassandra.db.ConsistencyLevel;
 import org.apache.cassandra.db.Keyspace;
 import org.apache.cassandra.db.ReadCommand;
+import org.apache.cassandra.db.composites.CellName;
+import org.apache.cassandra.db.composites.CellNames;
 import org.apache.cassandra.dht.Token;
 import org.apache.cassandra.exceptions.RequestExecutionException;
 import org.apache.cassandra.heartbeat.extra.HBConsts;
@@ -33,6 +35,7 @@ import org.apache.cassandra.locator.SimpleStrategy;
 import org.apache.cassandra.service.StorageService;
 import org.apache.cassandra.service.pager.Pageable;
 import org.apache.cassandra.service.pager.Pageable.ReadCommands;
+import org.apache.cassandra.utils.ByteBufferUtil;
 import org.apache.cassandra.utils.keyvaluestore.ConfReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -235,4 +238,20 @@ public class HBUtils {
 			}
 		return ksNames;
 	}
+	
+	public static CellName cellname(ByteBuffer... bbs)
+    {
+        if (bbs.length == 1)
+            return CellNames.simpleDense(bbs[0]);
+        else
+            return CellNames.compositeDense(bbs);
+    }
+	
+	public static CellName cellname(String... strs)
+    {
+        ByteBuffer[] bbs = new ByteBuffer[strs.length];
+        for (int i = 0; i < strs.length; i++)
+            bbs[i] = ByteBufferUtil.bytes(strs[i]);
+        return cellname(bbs);
+    }
 }

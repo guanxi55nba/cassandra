@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.apache.cassandra.Util;
 import org.apache.cassandra.config.DatabaseDescriptor;
 import org.apache.cassandra.db.BufferCell;
 import org.apache.cassandra.db.Cell;
@@ -65,7 +64,7 @@ public class StatusMap {
 				TreeMap<Long, Long> removedEntry = new TreeMap<Long, Long>();
 				if (currentStatus != null) {
 					for (ColumnFamily columnFamily : inMutation.getColumnFamilies()) {
-						Cell cell = columnFamily.getColumn(Util.cellname(HBConsts.VERSON_NO));
+						Cell cell = columnFamily.getColumn(HBUtils.cellname(HBConsts.VERSON_NO));
 						if (cell instanceof BufferCell) {
 							BufferCell bufferCell = (BufferCell) cell;
 							Long version = bufferCell.value().getLong();

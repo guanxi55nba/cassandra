@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.cassandra.Util;
 import org.apache.cassandra.config.CFMetaData;
 import org.apache.cassandra.config.ColumnDefinition;
 import org.apache.cassandra.config.DatabaseDescriptor;
@@ -143,7 +142,7 @@ public class HBUtils {
 
 	public static Version getMutationVersion(ColumnFamily columnFamily) {
 		Version version = null;
-		Cell cell = columnFamily.getColumn(Util.cellname(HBConsts.VERSON_NO));
+		Cell cell = columnFamily.getColumn(HBUtils.cellname(HBConsts.VERSON_NO));
 		if (cell instanceof BufferCell) {
 			BufferCell bufferCell = (BufferCell) cell;
 			long timestamp = bufferCell.timestamp();
